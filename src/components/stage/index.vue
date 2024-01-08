@@ -17,6 +17,7 @@ const options: DiagramInitOptions = {
 onMounted(() => {
 	console.log('stageBox-----', stageBox)
 	const diagram = new go.Diagram(stageBox.value, options);
+	console.log(diagram)
 })
 
 

@@ -12,6 +12,8 @@ dist
 dist-ssr
 *.local
 
+analysis-chart.html
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
