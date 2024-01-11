@@ -1,10 +1,10 @@
-<template>
-	<div class="stage" ref="stageBox"></div>
-</template>
 <script setup lang="ts">
 import * as go from "gojs";
-import {DiagramInitOptions} from 'gojs'
+import {DiagramInitOptions, Diagram} from 'gojs'
 import {ref, onMounted, Ref} from 'vue'
+import stageStore from '@/store/modules/stage'
+
+const userStore = stageStore()
 
 const stageBox = ref() as Ref<Element>
 const options: DiagramInitOptions = {
@@ -14,17 +14,25 @@ const options: DiagramInitOptions = {
 	"draggingTool.dragsTree": true,
 	"undoManager.isEnabled": true
 }
+let diagram: Diagram;
 onMounted(() => {
-	console.log('stageBox-----', stageBox)
-	const diagram = new go.Diagram(stageBox.value, options);
-	console.log(diagram)
+	diagram = new go.Diagram(stageBox.value, options);
+	userStore.updateStage(diagram)
 })
 
 
 </script>
+
+<template>
+	<div class="stage" ref="stageBox"></div>
+</template>
+
 <style lang="less">
 .stage {
 	width: 100%;
 	height: 100%;
+	position: absolute;
+	z-index: 1;
 }
+
 </style>
