@@ -5,6 +5,8 @@ import path from "path";
 import externalGlobals from 'rollup-plugin-external-globals';
 import {createHtmlPlugin} from 'vite-plugin-html'
 
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
+
 // https://vitejs.dev/config/
 export default defineConfig({
 	build: {
@@ -33,7 +35,11 @@ export default defineConfig({
 		// 			gojs: '<script src="/js/go.js"></script>'
 		// 		}
 		// 	}
-		// })
+		// }),
+		createSvgIconsPlugin({
+			iconDirs: [path.resolve(process.cwd(), "src/assets/icons")],
+			symbolId: "icon-[dir]-[name]",
+		}),
 	],
 	resolve: {
 		alias: {
