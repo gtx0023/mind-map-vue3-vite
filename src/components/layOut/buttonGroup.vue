@@ -6,7 +6,7 @@
 
 <style scoped lang="less">
 .button-group{
-	position: relative;
+	position: relative; display: flex;
 	&::after{
 		content: ''; display: inline-block; width: 1px; height: 15px; position: absolute; right: 0; top: 50%; transform: translate(0, -50%); background: #868686;
 	}

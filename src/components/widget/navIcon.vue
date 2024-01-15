@@ -2,14 +2,14 @@
 import {
 	Folder,
 	Download,
-	Picture, Service, Delete, Opportunity, MoreFilled
+	Picture, Service, Delete, Opportunity
 } from '@element-plus/icons-vue'
 </script>
 
 <template>
 	<el-dropdown trigger="click" size="default">
         <span class="el-dropdown-link nav_button_dropdown">
-          <el-icon><MoreFilled/></el-icon>
+          <el-icon><Menu/></el-icon>
         </span>
 		<template #dropdown>
 			<el-dropdown-menu>
