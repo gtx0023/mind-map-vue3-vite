@@ -46,7 +46,9 @@ import buttonGroup from "../layOut/buttonGroup.vue"
 		</buttonGroup>
 		<buttonGroup>
 			<el-button class="icon-bt">
-				<el-icon><More /></el-icon>
+				<el-icon>
+					<More/>
+				</el-icon>
 			</el-button>
 		</buttonGroup>
 	</div>
