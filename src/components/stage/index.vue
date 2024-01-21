@@ -3,6 +3,7 @@ import * as go from "gojs";
 import {DiagramInitOptions, Diagram} from 'gojs'
 import {ref, onMounted, Ref} from 'vue'
 import stageStore from '@/store/modules/stage'
+import Grid from './utils/grid'
 
 const userStore = stageStore()
 
@@ -12,12 +13,17 @@ const options: DiagramInitOptions = {
 	"commandHandler.copiesParentKey": true,
 	"commandHandler.deletesTree": true,
 	"draggingTool.dragsTree": true,
-	"undoManager.isEnabled": true
+	"undoManager.isEnabled": true,
+	"grid.visible": true
 }
 let diagram: Diagram;
 onMounted(() => {
 	diagram = new go.Diagram(stageBox.value, options);
 	userStore.updateStage(diagram)
+
+	// 引入grid
+	const gridIns = new Grid(diagram);
+	gridIns.init()
 })
 
 
