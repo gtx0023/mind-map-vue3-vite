@@ -61,7 +61,7 @@ const initTools = () => {
 	diagram.toolManager.mouseMoveTools.insertAt(2, dragCreatingTool);
 }
 stageStoreIns.$subscribe((mutation, state) => {
-	console.log(mutation, state.useTools.type)
+	console.log(mutation.storeId)
 	if(state.useTools.type === 'dragCreate') {
 		dragCreatingTool.isEnabled = true
 	} else {
