@@ -1,15 +1,15 @@
 import * as go from 'gojs';
-import {Part} from "gojs";
+import {Part, ObjectData, Rect} from "gojs";
 
 class DragCreatingTool extends go.Tool {
 	// override
-	private _archetypeNodeData: null;
+	private _archetypeNodeData: ObjectData
 	private _box: Part;
 	private _delay: number;
 
 	constructor() {
 		super();
-		this._archetypeNodeData = null;
+		this._archetypeNodeData = {};
 
 		const b = new go.Part();
 		b.layerName = "Tool";
@@ -79,9 +79,10 @@ class DragCreatingTool extends go.Tool {
 	doActivate() {
 		var diagram = this.diagram;
 		if (diagram === null) return;
-		diagram.remove(this.box);
-		diagram.isMouseCaptured = false;
-		this.isActive = false;
+		this.isActive = true;
+		diagram.isMouseCaptured = true;
+		diagram.add(this.box);
+		this.doMouseMove();
 	}
 
 	doDeactivate() {
@@ -98,8 +99,12 @@ class DragCreatingTool extends go.Tool {
 		if (this.isActive && this.box !== null) {
 			var r = this.computeBoxBounds();
 			var shape = this.box.findObject("SHAPE");
-			if (shape === null) shape = this.box.findMainElement();
-			shape.desiredSize = r.size;
+			if (shape === null) {
+				shape = this.box.findMainElement()
+			} else {
+				shape.desiredSize = r.size;
+			}
+
 			this.box.position = r.position;
 		}
 	}
@@ -126,7 +131,7 @@ class DragCreatingTool extends go.Tool {
 		return new go.Rect(start, latest);
 	}
 
-	insertPart(bounds) {
+	insertPart(bounds: Rect) {
 		var diagram = this.diagram;
 		if (diagram === null) return null;
 		var arch = this.archetypeNodeData;
@@ -158,3 +163,5 @@ class DragCreatingTool extends go.Tool {
 		return part;
 	}
 }
+
+export default DragCreatingTool
