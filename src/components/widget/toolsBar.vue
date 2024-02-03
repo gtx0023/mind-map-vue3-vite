@@ -1,5 +1,19 @@
 <script setup lang="ts">
 import buttonGroup from "../layOut/buttonGroup.vue"
+import stageStore from '@/store/modules/stage'
+const userStore = stageStore()
+
+const clickHandBtn = () => {
+	userStore.updateUseTools('move')
+}
+
+const clickSelectBtn = () => {
+	userStore.updateUseTools('select')
+}
+
+const clickSquareBtn = () => {
+	userStore.updateUseTools('dragCreate')
+}
 </script>
 
 <template>
@@ -10,13 +24,13 @@ import buttonGroup from "../layOut/buttonGroup.vue"
 			</el-button>
 		</buttonGroup>
 		<buttonGroup>
-			<el-button class="icon-bt">
+			<el-button class="icon-bt" @click="clickHandBtn">
 				<svg-icon name="hand" width="24px" height="24px" color="red"></svg-icon>
 			</el-button>
-			<el-button class="icon-bt">
+			<el-button class="icon-bt" @click="clickSelectBtn">
 				<svg-icon name="select" width="24px" height="24px" color="red"></svg-icon>
 			</el-button>
-			<el-button class="icon-bt">
+			<el-button class="icon-bt" @click="clickSquareBtn">
 				<svg-icon name="square" width="24px" height="24px" color="red"></svg-icon>
 			</el-button>
 			<el-button class="icon-bt">

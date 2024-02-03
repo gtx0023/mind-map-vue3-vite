@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import * as go from "gojs";
 import {DiagramInitOptions, Diagram, Node} from 'gojs'
-import {ref, onMounted, Ref} from 'vue'
+import {ref, onMounted, Ref, watch} from 'vue'
 import stageStore from '@/store/modules/stage'
 import Grid from './utils/grid'
 import nodeTemplate from "@/components/stage/temp/nodeTemplate";
@@ -9,7 +9,7 @@ import DragCreatingTool from "@/components/stage/tools/DragCreatingTool";
 
 const $ = go.GraphObject.make;
 
-const userStore = stageStore()
+const stageStoreIns = stageStore()
 
 const stageBox = ref() as Ref<Element>
 const options: DiagramInitOptions = {
@@ -21,21 +21,29 @@ const options: DiagramInitOptions = {
 	"grid.visible": true
 }
 let diagram: Diagram;
-onMounted(() => {
-	diagram = new go.Diagram(stageBox.value, options);
-	userStore.updateStage(diagram)
+// dragCreatingTool 挂在外层用于是否开启Tools的使用
+let dragCreatingTool: DragCreatingTool;
 
+const initDiagram = () => {
+	diagram = new go.Diagram(stageBox.value, options);
+	stageStoreIns.updateStage(diagram);
+}
+
+const initOptions = () =>{
 	// 引入grid
 	const gridIns = new Grid(diagram);
 	gridIns.init()
+}
 
+const initNodeTemplateMap = () => {
 	diagram.nodeTemplate = nodeTemplate()
 	const templateMap = new go.Map<string, go.Node>();
 	templateMap.add('', <Node>diagram.nodeTemplate)
-
+}
+const initTools = () => {
 	// tools
-	const dragCreatingTool = new DragCreatingTool()
-	dragCreatingTool.isEnabled = true
+	dragCreatingTool = new DragCreatingTool()
+	dragCreatingTool.isEnabled = false
 	dragCreatingTool.delay = 0;
 	dragCreatingTool.box = $(go.Part,
 		{ layerName: "Tool" },
@@ -44,12 +52,31 @@ onMounted(() => {
 	);
 	dragCreatingTool.archetypeNodeData = { color: "white" };
 	dragCreatingTool.insertPart = (bounds) =>{
-		// use a different color each time
+		// 此处修改了 archetypeNodeData
+		// archetypeNodeData 包含了临时节点的所有属性
 		dragCreatingTool.archetypeNodeData.color = go.Brush.randomColor();
 		// call the base method to do normal behavior and return its result
 		return DragCreatingTool.prototype.insertPart.call(dragCreatingTool, bounds);
 	}
 	diagram.toolManager.mouseMoveTools.insertAt(2, dragCreatingTool);
+}
+stageStoreIns.$subscribe((mutation, state) => {
+	console.log(mutation, state.useTools.type)
+	if(state.useTools.type === 'dragCreate') {
+		dragCreatingTool.isEnabled = true
+	} else {
+		dragCreatingTool.isEnabled = false
+	}
+})
+
+onMounted(() => {
+	initDiagram()
+
+	initOptions()
+
+	initNodeTemplateMap()
+
+	initTools()
 })
 
 
