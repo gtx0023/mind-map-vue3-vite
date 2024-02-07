@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import * as go from "gojs";
 import {DiagramInitOptions, Diagram, Node} from 'gojs'
-import {ref, onMounted, Ref, watch} from 'vue'
+import {ref, onMounted, Ref} from 'vue'
 import stageStore from '@/store/modules/stage'
 import Grid from './utils/grid'
 import nodeTemplate from "@/components/stage/temp/nodeTemplate";
@@ -63,7 +63,14 @@ const initTools = () => {
 stageStoreIns.$subscribe((mutation, state) => {
 	console.log(mutation.storeId)
 	if(state.useTools.type === 'dragCreate') {
+		console.log('dragCreatingTool----', state.useTools.options)
+		// 设置拖拽创建工具是否开启
 		dragCreatingTool.isEnabled = true
+
+		dragCreatingTool.archetypeNodeData = {
+			...dragCreatingTool.archetypeNodeData,
+			...state.useTools.options
+		}
 	} else {
 		dragCreatingTool.isEnabled = false
 	}

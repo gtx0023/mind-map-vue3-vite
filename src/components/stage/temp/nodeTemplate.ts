@@ -9,6 +9,7 @@ const nodeTemplate = () => {
 		// temporarily put selected nodes in Foreground layer
 		new go.Binding("layerName", "isSelected", s => s ? "Foreground" : "").ofObject(),
 		$(go.Shape, "Rectangle",
+			new go.Binding("figure"),
 			new go.Binding("fill", "color")),
 		$(go.TextBlock,
 			{margin: 2},

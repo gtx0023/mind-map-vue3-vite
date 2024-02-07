@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import buttonGroup from "../layOut/buttonGroup.vue"
 import stageStore from '@/store/modules/stage'
+
 const userStore = stageStore()
 
 const clickHandBtn = () => {
@@ -12,6 +13,59 @@ const clickSelectBtn = () => {
 }
 
 const clickSquareBtn = () => {
+	userStore.updateUseTools({
+		type: 'dragCreate',
+		options: {figure: 'RoundedRectangle'}
+	})
+}
+
+const clickDiamondBtn = () => {
+	userStore.updateUseTools({
+		type: 'dragCreate',
+		options: {figure: 'Diamond'}
+	})
+}
+
+const clickCircleBtn = () => {
+	userStore.updateUseTools({
+		type: 'dragCreate',
+		options: {figure: 'Ellipse'}
+	})
+}
+
+const clickArrowLineBtn = () => {
+	// 设置箭头线 连线。用连线模板
+	userStore.updateUseTools({
+		type: 'linkLine',
+		options: {figure: 'arrowLine'}
+	})
+}
+
+const clickLineBtn = () => {
+	// 设置直线 连线。用连线模板
+	userStore.updateUseTools({
+		type: 'linkLine',
+		options: {figure: 'line'}
+	})
+}
+
+const clickPencilBtn = () => {
+	// 设置铅笔工具
+	userStore.updateUseTools('dragCreate')
+}
+
+const clickTextBtn = () => {
+	// 设置文本工具
+	userStore.updateUseTools('dragCreate')
+}
+
+const clickPicBtn = () => {
+	// 设置图片工具
+	userStore.updateUseTools('dragCreate')
+}
+
+const clickEraserBtn = () => {
+	// 设置橡皮擦工具
 	userStore.updateUseTools('dragCreate')
 }
 </script>
@@ -33,28 +87,28 @@ const clickSquareBtn = () => {
 			<el-button class="icon-bt" @click="clickSquareBtn">
 				<svg-icon name="square" width="24px" height="24px" color="red"></svg-icon>
 			</el-button>
-			<el-button class="icon-bt">
+			<el-button class="icon-bt" @click="clickDiamondBtn">
 				<svg-icon name="diamond" width="24px" height="24px" color="red"></svg-icon>
 			</el-button>
-			<el-button class="icon-bt">
+			<el-button class="icon-bt" @click="clickCircleBtn">
 				<svg-icon name="circle" width="24px" height="24px" color="red"></svg-icon>
 			</el-button>
-			<el-button class="icon-bt">
+			<el-button class="icon-bt" @click="clickArrowLineBtn">
 				<svg-icon name="arrowLine" width="24px" height="24px" color="red"></svg-icon>
 			</el-button>
-			<el-button class="icon-bt">
+			<el-button class="icon-bt" @click="clickLineBtn">
 				<svg-icon name="line" width="24px" height="24px" color="red"></svg-icon>
 			</el-button>
-			<el-button class="icon-bt">
+			<el-button class="icon-bt" @click="clickPencilBtn">
 				<svg-icon name="pencil" width="24px" height="24px" color="red"></svg-icon>
 			</el-button>
-			<el-button class="icon-bt">
+			<el-button class="icon-bt" @click="clickTextBtn">
 				<svg-icon name="text" width="24px" height="24px" color="red"></svg-icon>
 			</el-button>
-			<el-button class="icon-bt">
+			<el-button class="icon-bt" @click="clickPicBtn">
 				<svg-icon name="pic" width="24px" height="24px" color="red"></svg-icon>
 			</el-button>
-			<el-button class="icon-bt">
+			<el-button class="icon-bt" @click="clickEraserBtn">
 				<svg-icon name="eraser" width="24px" height="24px" color="red"></svg-icon>
 			</el-button>
 		</buttonGroup>
