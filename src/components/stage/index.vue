@@ -27,12 +27,23 @@ let dragCreatingTool: DragCreatingTool;
 const initDiagram = () => {
 	diagram = new go.Diagram(stageBox.value, options);
 	stageStoreIns.updateStage(diagram);
+	stageStoreIns.updateStageOptions({
+		initialScale: diagram.scale,
+
+	})
 }
 
-const initOptions = () =>{
+const initOptions = () => {
 	// 引入grid
 	const gridIns = new Grid(diagram);
 	gridIns.init()
+}
+
+const registerListener = () => {
+	diagram.addDiagramListener('ViewportBoundsChanged', e => {
+		// console.log('ViewportBoundsChanged---', e)
+		stageStoreIns.updateStage(diagram);
+	})
 }
 
 const initNodeTemplateMap = () => {
@@ -46,12 +57,12 @@ const initTools = () => {
 	dragCreatingTool.isEnabled = false
 	dragCreatingTool.delay = 0;
 	dragCreatingTool.box = $(go.Part,
-		{ layerName: "Tool" },
+		{layerName: "Tool"},
 		$(go.Shape,
-			{ name: "SHAPE", fill: null, stroke: "cyan", strokeWidth: 2 })
+			{name: "SHAPE", fill: null, stroke: "cyan", strokeWidth: 2})
 	);
-	dragCreatingTool.archetypeNodeData = { color: "white" };
-	dragCreatingTool.insertPart = (bounds) =>{
+	dragCreatingTool.archetypeNodeData = {color: "white"};
+	dragCreatingTool.insertPart = (bounds) => {
 		// 此处修改了 archetypeNodeData
 		// archetypeNodeData 包含了临时节点的所有属性
 		dragCreatingTool.archetypeNodeData.color = go.Brush.randomColor();
@@ -62,7 +73,7 @@ const initTools = () => {
 }
 stageStoreIns.$subscribe((mutation, state) => {
 	console.log(mutation.storeId)
-	if(state.useTools.type === 'dragCreate') {
+	if (state.useTools.type === 'dragCreate') {
 		console.log('dragCreatingTool----', state.useTools.options)
 		// 设置拖拽创建工具是否开启
 		dragCreatingTool.isEnabled = true
@@ -77,12 +88,19 @@ stageStoreIns.$subscribe((mutation, state) => {
 })
 
 onMounted(() => {
+	// 初始化diagram
 	initDiagram()
 
+	// 初始化options
 	initOptions()
 
+	// 注册监听
+	registerListener()
+
+	// 初始化nodeTemplateMap
 	initNodeTemplateMap()
 
+	// 初始化tools
 	initTools()
 })
 
